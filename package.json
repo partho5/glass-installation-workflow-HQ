@@ -7,7 +7,7 @@
   "scripts": {
     "dev:spotlight": "npx @spotlightjs/spotlight",
     "dev:next": "next dev",
-    "dev": "npm-run-all db-remote:neon db:migrate --parallel dev:*",
+    "dev": "npm-run-all db:migrate --parallel dev:*",
     "build:next": "next build --webpack",
     "build-local": "run-p db-server:memory build:next --race",
     "build": "npm run build:next",
@@ -39,6 +39,7 @@
     "@clerk/nextjs": "^6.35.6",
     "@hookform/resolvers": "^5.2.2",
     "@logtape/logtape": "^1.2.2",
+    "@notionhq/client": "^5.9.0",
     "@sentry/nextjs": "^10.28.0",
     "@t3-oss/env-nextjs": "^0.13.8",
     "drizzle-orm": "^0.44.7",

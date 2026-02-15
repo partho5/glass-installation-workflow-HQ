@@ -51,11 +51,28 @@ export default async function proxy(
     }
   }
 
+  // Handle API routes separately (no i18n routing)
+  if (request.nextUrl.pathname.startsWith('/api')) {
+    return clerkMiddleware(async (auth) => {
+      await auth.protect();
+      return NextResponse.next();
+    })(request, event);
+  }
+
   // Clerk keyless mode doesn't work with i18n, this is why we need to run the middleware conditionally
   if (
     isAuthPage(request) || isProtectedRoute(request)
   ) {
     return clerkMiddleware(async (auth, req) => {
+      const { userId } = await auth();
+
+      // Redirect authenticated users away from auth pages to dashboard
+      if (isAuthPage(req) && userId) {
+        const locale = req.nextUrl.pathname.match(/^\/([^/]+)\//)?.at(1) ?? '';
+        const dashboardUrl = locale ? `/${locale}/dashboard` : '/dashboard';
+        return NextResponse.redirect(new URL(dashboardUrl, req.url));
+      }
+
       if (isProtectedRoute(req)) {
         const locale = req.nextUrl.pathname.match(/(\/.*)\/dashboard/)?.at(1) ?? '';
 

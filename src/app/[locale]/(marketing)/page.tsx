@@ -1,134 +1,142 @@
 import type { Metadata } from 'next';
-import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { Sponsors } from '@/components/Sponsors';
+import { setRequestLocale } from 'next-intl/server';
+import { HomeNavigation } from '@/components/HomeNavigation';
 
 type IIndexProps = {
   params: Promise<{ locale: string }>;
 };
 
-export async function generateMetadata(props: IIndexProps): Promise<Metadata> {
-  const { locale } = await props.params;
-  const t = await getTranslations({
-    locale,
-    namespace: 'Index',
-  });
-
-  return {
-    title: t('meta_title'),
-    description: t('meta_description'),
-  };
-}
+export const metadata: Metadata = {
+  title: 'Glass Installation Workflow System - Hnos. Rodríguez',
+  description: 'Digital workflow management system for glass installation business',
+};
 
 export default async function Index(props: IIndexProps) {
   const { locale } = await props.params;
   setRequestLocale(locale);
-  const t = await getTranslations({
-    locale,
-    namespace: 'Index',
-  });
 
   return (
-    <>
-      <p>
-        {`Follow `}
-        <a
-          className="text-blue-700 hover:border-b-2 hover:border-blue-700"
-          href="https://twitter.com/ixartz"
-          target="_blank"
-          rel="noreferrer noopener"
-        >
-          @Ixartz on Twitter
-        </a>
-        {` for updates and more information about the boilerplate.`}
-      </p>
-      <h2 className="mt-5 text-2xl font-bold">
-        Boilerplate Code for Your Next.js Project with Tailwind CSS
-      </h2>
-      <p className="text-base">
-        Next.js Boilerplate is a developer-friendly starter code for Next.js projects, built with Tailwind CSS and TypeScript.
-        {' '}
-        <span role="img" aria-label="zap">
-          ⚡️
-        </span>
-        {' '}
-        Designed with developer experience in mind, it includes:
-      </p>
-      <ul className="mt-3 text-base">
-        <li>🚀 Next.js with App Router support</li>
-        <li>🔥 TypeScript for type checking</li>
-        <li>💎 Tailwind CSS integration</li>
-        <li>
-          🔒 Authentication with
-          {' '}
-          <a
-            className="font-bold text-blue-700 hover:border-b-2 hover:border-blue-700"
-            href="https://clerk.com?utm_source=github&amp;utm_medium=sponsorship&amp;utm_campaign=nextjs-boilerplate"
-          >
-            Clerk
-          </a>
-          {' '}
-          (includes passwordless, social, and multi-factor auth)
-        </li>
-        <li>📦 ORM with DrizzleORM (PostgreSQL, SQLite, MySQL support)</li>
-        <li>
-          💽 Dev database with PGlite and production with Neon (PostgreSQL)
-        </li>
-        <li>
-          🌐 Multi-language support (i18n) with next-intl and
-          {' '}
-          <a
-            className="font-bold text-blue-700 hover:border-b-2 hover:border-blue-700"
-            href="https://l.crowdin.com/next-js"
-          >
-            Crowdin
-          </a>
-        </li>
-        <li>🔴 Form handling (React Hook Form) and validation (Zod)</li>
-        <li>📏 Linting and formatting (ESLint, Prettier)</li>
-        <li>🦊 Git hooks and commit linting (Husky, Commitlint)</li>
-        <li>🦺 Testing suite (Vitest, React Testing Library, Playwright)</li>
-        <li>🎉 Storybook for UI development</li>
-        <li>
-          🐰 AI-powered code reviews with
-          {' '}
-          <a
-            className="font-bold text-blue-700 hover:border-b-2 hover:border-blue-700"
-            href="https://www.coderabbit.ai?utm_source=next_js_starter&utm_medium=github&utm_campaign=next_js_starter_oss_2025"
-          >
-            CodeRabbit
-          </a>
-        </li>
-        <li>
-          🚨 Error monitoring (
-          <a
-            className="font-bold text-blue-700 hover:border-b-2 hover:border-blue-700"
-            href="https://sentry.io/for/nextjs/?utm_source=github&amp;utm_medium=paid-community&amp;utm_campaign=general-fy25q1-nextjs&amp;utm_content=github-banner-nextjsboilerplate-logo"
-          >
-            Sentry
-          </a>
-          ) and logging (LogTape, an alternative to Pino.js)
-        </li>
-        <li>🖥️ Monitoring as Code (Checkly)</li>
-        <li>
-          🔐 Security and bot protection (
-          <a
-            className="font-bold text-blue-700 hover:border-b-2 hover:border-blue-700"
-            href="https://launch.arcjet.com/Q6eLbRE"
-          >
-            Arcjet
-          </a>
-          )
-        </li>
-        <li>🤖 SEO optimization (metadata, JSON-LD, Open Graph tags)</li>
-        <li>⚙️ Development tools (VSCode config, bundler analyzer, changelog generation)</li>
-      </ul>
-      <p className="text-base">
-        Our sponsors&apos; exceptional support has made this project possible.
-        Their services integrate seamlessly with the boilerplate, and we
-        recommend trying them out.
-      </p>
-      <h2 className="mt-5 text-2xl font-bold">{t('sponsors_title')}</h2>
-      <Sponsors />
-    </>
+    <div className="mx-auto max-w-4xl">
+      {/* Hero Section */}
+      <div className="mb-12 text-center">
+        <h1 className="mb-4 text-4xl font-bold text-gray-900 md:text-5xl">
+          Glass Installation Workflow System
+        </h1>
+        <p className="text-xl text-gray-600">
+          Hnos. Rodríguez - Sistema de Gestión de Instalación de Vidrios
+        </p>
+      </div>
+
+      {/* Quick Actions */}
+      <HomeNavigation />
+
+      {/* About Section */}
+      <div className="mb-12 rounded-lg bg-white p-8 shadow-md">
+        <h2 className="mb-4 text-2xl font-bold text-gray-900">About This System</h2>
+        <p className="mb-4 text-gray-700">
+          A production-ready digital workflow system designed for Mexican glass installation businesses
+          that service corporate truck fleets. This system replaces paper-based processes with a complete
+          digital workflow from order intake to payment collection.
+        </p>
+      </div>
+
+      {/* Features Section */}
+      <div className="mb-12 rounded-lg bg-white p-8 shadow-md">
+        <h2 className="mb-6 text-2xl font-bold text-gray-900">Key Features</h2>
+        <div className="grid gap-4 md:grid-cols-2">
+          <div className="rounded-lg bg-gray-50 p-4">
+            <h3 className="mb-2 flex items-center gap-2 font-semibold text-gray-900">
+              <span className="text-xl">📋</span>
+              Order Management
+            </h3>
+            <p className="text-sm text-gray-600">
+              Create and track orders with auto-generated IDs, client management, and truck model database
+            </p>
+          </div>
+
+          <div className="rounded-lg bg-gray-50 p-4">
+            <h3 className="mb-2 flex items-center gap-2 font-semibold text-gray-900">
+              <span className="text-xl">📦</span>
+              Inventory Check
+            </h3>
+            <p className="text-sm text-gray-600">
+              Real-time stock verification with automated ordering workflows for out-of-stock items
+            </p>
+          </div>
+
+          <div className="rounded-lg bg-gray-50 p-4">
+            <h3 className="mb-2 flex items-center gap-2 font-semibold text-gray-900">
+              <span className="text-xl">📅</span>
+              Crew Scheduling
+            </h3>
+            <p className="text-sm text-gray-600">
+              Assign crews, schedule jobs, and generate material checklists automatically
+            </p>
+          </div>
+
+          <div className="rounded-lg bg-gray-50 p-4">
+            <h3 className="mb-2 flex items-center gap-2 font-semibold text-gray-900">
+              <span className="text-xl">📱</span>
+              Mobile-First Design
+            </h3>
+            <p className="text-sm text-gray-600">
+              Responsive interface works seamlessly on phones, tablets, and desktop computers
+            </p>
+          </div>
+
+          <div className="rounded-lg bg-gray-50 p-4">
+            <h3 className="mb-2 flex items-center gap-2 font-semibold text-gray-900">
+              <span className="text-xl">🔒</span>
+              Role-Based Access
+            </h3>
+            <p className="text-sm text-gray-600">
+              Secure authentication with different permissions for assistants, crews, and owners
+            </p>
+          </div>
+
+          <div className="rounded-lg bg-gray-50 p-4">
+            <h3 className="mb-2 flex items-center gap-2 font-semibold text-gray-900">
+              <span className="text-xl">🗂️</span>
+              Notion Integration
+            </h3>
+            <p className="text-sm text-gray-600">
+              All business data managed in Notion - no developer needed for updates
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Workflow Section */}
+      <div className="rounded-lg bg-white p-8 shadow-md">
+        <h2 className="mb-6 text-2xl font-bold text-gray-900">Complete Workflow</h2>
+        <div className="space-y-3">
+          <div className="flex items-center gap-3">
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-yellow-100 text-yellow-800">1</span>
+            <span className="font-medium">Order Initiation</span>
+            <span className="text-gray-400">→ Pendiente</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-blue-800">2</span>
+            <span className="font-medium">Inventory Check</span>
+            <span className="text-gray-400">→ En Stock / Sin Stock</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-purple-100 text-purple-800">3</span>
+            <span className="font-medium">Crew Scheduling</span>
+            <span className="text-gray-400">→ Programado</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-green-100 text-green-800">4</span>
+            <span className="font-medium">Field Execution</span>
+            <span className="text-gray-400">→ Completado</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-800">5</span>
+            <span className="font-medium">Monthly Billing</span>
+            <span className="text-gray-400">→ Facturado</span>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
