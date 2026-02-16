@@ -13,6 +13,8 @@ const handleI18nRouting = createMiddleware(routing);
 const isProtectedRoute = createRouteMatcher([
   '/dashboard(.*)',
   '/:locale/dashboard(.*)',
+  '/crew-dashboard(.*)',
+  '/:locale/crew-dashboard(.*)',
   '/api(.*)',
 ]);
 

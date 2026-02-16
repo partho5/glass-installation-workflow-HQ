@@ -40,8 +40,10 @@
     "@hookform/resolvers": "^5.2.2",
     "@logtape/logtape": "^1.2.2",
     "@notionhq/client": "^5.9.0",
+    "@react-pdf/renderer": "^4.3.2",
     "@sentry/nextjs": "^10.28.0",
     "@t3-oss/env-nextjs": "^0.13.8",
+    "@types/react-signature-canvas": "^1.0.7",
     "drizzle-orm": "^0.44.7",
     "next": "^16.0.10",
     "next-intl": "^4.5.8",
@@ -50,6 +52,8 @@
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "react-hook-form": "^7.67.0",
+    "react-signature-canvas": "^1.1.0-alpha.2",
+    "twilio": "^5.12.1",
     "zod": "^4.1.13"
   },
   "devDependencies": {

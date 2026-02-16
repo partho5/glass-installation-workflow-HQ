@@ -71,5 +71,18 @@
     "dashboard_link": "Tableau de bord",
     "user_profile_link": "Gérer votre compte",
     "sign_out": "Se déconnecter"
+  },
+  "CrewJobList": {
+    "order": "Commande",
+    "programmed": "Programmé",
+    "unit": "Unité",
+    "model": "Modèle",
+    "position": "Position",
+    "start_work": "Commencer le travail",
+    "no_jobs": "Aucun travail programmé",
+    "no_jobs_message": "Les travaux assignés à votre équipe apparaîtront ici",
+    "scheduled_work": "Travail programmé",
+    "pending_task": "tâche en attente",
+    "pending_tasks": "tâches en attente"
   }
 }

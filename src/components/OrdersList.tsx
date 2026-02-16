@@ -2,6 +2,7 @@
 
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useMemo } from 'react';
+import { useTranslations } from 'next-intl';
 import { OrderDetailModal } from './OrderDetailModal';
 
 type Order = {
@@ -26,15 +27,16 @@ type OrdersListProps = {
 };
 
 const WORKFLOW_STATUSES = [
-  { key: 'all', label: 'Todos', icon: '📋' },
-  { key: 'Pendiente', label: 'Pendiente', icon: '⏳' },
-  { key: 'En Stock', label: 'En Stock', icon: '📦' },
-  { key: 'Sin Stock', label: 'Sin Stock', icon: '❌' },
-  { key: 'Programado', label: 'Programado', icon: '📅' },
-  { key: 'Completado', label: 'Completado', icon: '🏁' },
+  { key: 'all', labelKey: 'filter_all', icon: '📋' },
+  { key: 'Pendiente', labelKey: 'filter_pending', icon: '⏳' },
+  { key: 'En Stock', labelKey: 'filter_in_stock', icon: '📦' },
+  { key: 'Sin Stock', labelKey: 'filter_out_of_stock', icon: '❌' },
+  { key: 'Programado', labelKey: 'filter_scheduled', icon: '📅' },
+  { key: 'Completado', labelKey: 'filter_completed', icon: '🏁' },
 ];
 
 export function OrdersList({ orders, clients, truckModels, crews }: OrdersListProps) {
+  const t = useTranslations('OrdersList');
   const router = useRouter();
   const searchParams = useSearchParams();
   const currentTab = searchParams.get('status') || 'all';
@@ -142,7 +144,7 @@ export function OrdersList({ orders, clients, truckModels, crews }: OrdersListPr
                 `}
               >
                 <span>{status.icon}</span>
-                <span>{status.label}</span>
+                <span>{t(status.labelKey as any)}</span>
                 <span className="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-semibold text-gray-600">
                   {counts[status.key as keyof typeof counts]}
                 </span>
@@ -156,7 +158,7 @@ export function OrdersList({ orders, clients, truckModels, crews }: OrdersListPr
           {filteredOrders.length === 0
             ? (
                 <div className="py-12 text-center">
-                  <p className="text-gray-500">No orders found in this status</p>
+                  <p className="text-gray-500">{t('no_orders')}</p>
                 </div>
               )
             : (
@@ -188,11 +190,11 @@ export function OrdersList({ orders, clients, truckModels, crews }: OrdersListPr
 
                           <div className="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
                             <div>
-                              <span className="font-medium text-gray-700">Client:</span>
+                              <span className="font-medium text-gray-700">{t('client')}:</span>
                               <span className="ml-2 text-gray-600">{order.clientName}</span>
                             </div>
                             <div>
-                              <span className="font-medium text-gray-700">Unit Number:</span>
+                              <span className="font-medium text-gray-700">{t('unit')}:</span>
                               <span className="ml-2 text-gray-600">{order.unitNumber}</span>
                             </div>
                             <div>
@@ -200,7 +202,7 @@ export function OrdersList({ orders, clients, truckModels, crews }: OrdersListPr
                               <span className="ml-2 text-gray-600">{order.truckModelName}</span>
                             </div>
                             <div>
-                              <span className="font-medium text-gray-700">Glass Position:</span>
+                              <span className="font-medium text-gray-700">{t('glass')}:</span>
                               <span className="ml-2 text-gray-600">{order.glassPosition}</span>
                             </div>
                           </div>
@@ -213,7 +215,7 @@ export function OrdersList({ orders, clients, truckModels, crews }: OrdersListPr
                           )}
 
                           <div className="mt-2 text-xs text-gray-500">
-                            Created:
+                            {t('created')}:
                             {' '}
                             {new Date(order.createdAt).toLocaleString()}
                           </div>

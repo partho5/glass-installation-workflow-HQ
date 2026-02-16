@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 type OrderDetailModalProps = {
   order: {
@@ -20,6 +21,7 @@ type OrderDetailModalProps = {
 };
 
 export function OrderDetailModal({ order, crews, onClose }: OrderDetailModalProps) {
+  const t = useTranslations('OrderDetailModal');
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -44,7 +46,7 @@ export function OrderDetailModal({ order, crews, onClose }: OrderDetailModalProp
       });
 
       if (!response.ok) {
-        throw new Error('Failed to update status');
+        throw new Error(t('update_error'));
       }
 
       // Refresh the page to show updated data
@@ -52,7 +54,7 @@ export function OrderDetailModal({ order, crews, onClose }: OrderDetailModalProp
       onClose();
     } catch (error) {
       console.error('Error updating status:', error);
-      setErrorMessage('Failed to update order status');
+      setErrorMessage(t('update_error'));
     } finally {
       setLoading(false);
     }
@@ -63,20 +65,20 @@ export function OrderDetailModal({ order, crews, onClose }: OrderDetailModalProp
   };
 
   const handleSinStock = () => {
-    handleStatusChange('Sin Stock', 'Needs to order glass');
+    handleStatusChange('Sin Stock', t('mark_out_of_stock'));
   };
 
   const handleMaterialRecibido = () => {
-    handleStatusChange('En Stock', 'Material received and in stock');
+    handleStatusChange('En Stock', t('mark_in_stock'));
   };
 
   const confirmEnStock = () => {
-    handleStatusChange('En Stock', inventoryNote || 'Material in stock');
+    handleStatusChange('En Stock', inventoryNote || t('mark_in_stock'));
   };
 
   const handleScheduleOrder = async () => {
     if (!crewId || !scheduleDate) {
-      setErrorMessage('Please select crew and schedule date');
+      setErrorMessage(t('schedule_error'));
       return;
     }
 
@@ -94,14 +96,14 @@ export function OrderDetailModal({ order, crews, onClose }: OrderDetailModalProp
       });
 
       if (!response.ok) {
-        throw new Error('Failed to schedule order');
+        throw new Error(t('schedule_error'));
       }
 
       router.refresh();
       onClose();
     } catch (error) {
       console.error('Error scheduling order:', error);
-      setErrorMessage('Failed to schedule order');
+      setErrorMessage(t('schedule_error'));
     } finally {
       setLoading(false);
     }
@@ -112,7 +114,7 @@ export function OrderDetailModal({ order, crews, onClose }: OrderDetailModalProp
     if (loading) {
       return (
         <div className="text-center text-gray-500">
-          Updating...
+          {t('updating')}
         </div>
       );
     }
@@ -121,7 +123,7 @@ export function OrderDetailModal({ order, crews, onClose }: OrderDetailModalProp
       case 'Pendiente':
         return (
           <div className="space-y-3">
-            <h3 className="text-sm font-semibold text-gray-700">Inventory Check</h3>
+            <h3 className="text-sm font-semibold text-gray-700">{t('inventory_check')}</h3>
             {!showInventoryNote
               ? (
                   <div className="flex flex-col gap-3 sm:flex-row">
@@ -131,7 +133,7 @@ export function OrderDetailModal({ order, crews, onClose }: OrderDetailModalProp
                       className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-green-600 px-6 py-4 text-base font-medium text-white transition-colors hover:bg-green-700 active:bg-green-800"
                     >
                       <span className="text-xl">✅</span>
-                      <span>En Stock</span>
+                      <span>{t('status_in_stock')}</span>
                     </button>
                     <button
                       type="button"
@@ -139,7 +141,7 @@ export function OrderDetailModal({ order, crews, onClose }: OrderDetailModalProp
                       className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-red-600 px-6 py-4 text-base font-medium text-white transition-colors hover:bg-red-700 active:bg-red-800"
                     >
                       <span className="text-xl">🔴</span>
-                      <span>Sin Stock - Pedir</span>
+                      <span>{t('status_out_of_stock')}</span>
                     </button>
                   </div>
                 )
@@ -148,7 +150,7 @@ export function OrderDetailModal({ order, crews, onClose }: OrderDetailModalProp
                     <textarea
                       value={inventoryNote}
                       onChange={e => setInventoryNote(e.target.value)}
-                      placeholder="Add inventory note (optional)..."
+                      placeholder={t('inventory_note_placeholder')}
                       rows={3}
                       className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base"
                     />
@@ -158,14 +160,14 @@ export function OrderDetailModal({ order, crews, onClose }: OrderDetailModalProp
                         onClick={confirmEnStock}
                         className="flex-1 rounded-lg bg-green-600 px-6 py-3 font-medium text-white hover:bg-green-700"
                       >
-                        Confirm En Stock
+                        {t('mark_in_stock')}
                       </button>
                       <button
                         type="button"
                         onClick={() => setShowInventoryNote(false)}
                         className="rounded-lg border border-gray-300 px-6 py-3 font-medium text-gray-700 hover:bg-gray-50"
                       >
-                        Cancel
+                        {t('close')}
                       </button>
                     </div>
                   </div>
@@ -176,14 +178,14 @@ export function OrderDetailModal({ order, crews, onClose }: OrderDetailModalProp
       case 'Sin Stock':
         return (
           <div className="space-y-3">
-            <h3 className="text-sm font-semibold text-gray-700">Material Arrival</h3>
+            <h3 className="text-sm font-semibold text-gray-700">{t('inventory_check')}</h3>
             <button
               type="button"
               onClick={handleMaterialRecibido}
               className="flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 px-6 py-4 text-base font-medium text-white transition-colors hover:bg-blue-700 active:bg-blue-800"
             >
               <span className="text-xl">📦</span>
-              <span>Material Recibido</span>
+              <span>{t('mark_in_stock')}</span>
             </button>
           </div>
         );
@@ -191,7 +193,7 @@ export function OrderDetailModal({ order, crews, onClose }: OrderDetailModalProp
       case 'En Stock':
         return (
           <div className="space-y-3">
-            <h3 className="text-sm font-semibold text-gray-700">Programar Cuadrilla</h3>
+            <h3 className="text-sm font-semibold text-gray-700">{t('schedule_installation')}</h3>
             {!showScheduling
               ? (
                   <button
@@ -200,7 +202,7 @@ export function OrderDetailModal({ order, crews, onClose }: OrderDetailModalProp
                     className="flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 px-6 py-4 text-base font-medium text-white hover:bg-blue-700 active:bg-blue-800"
                   >
                     <span className="text-xl">📅</span>
-                    <span>Programar Cuadrilla</span>
+                    <span>{t('schedule_installation')}</span>
                   </button>
                 )
               : (
@@ -208,7 +210,7 @@ export function OrderDetailModal({ order, crews, onClose }: OrderDetailModalProp
                     {/* Crew Selection */}
                     <div>
                       <label htmlFor="crewId" className="mb-2 block text-sm font-medium text-gray-700">
-                        Seleccionar Cuadrilla *
+                        {t('assigned_crew_label')} *
                       </label>
                       <select
                         id="crewId"
@@ -217,7 +219,7 @@ export function OrderDetailModal({ order, crews, onClose }: OrderDetailModalProp
                         className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base"
                         required
                       >
-                        <option value="">Seleccionar cuadrilla...</option>
+                        <option value="">{t('assigned_crew_placeholder')}</option>
                         {crews.map(crew => (
                           <option key={crew.id} value={crew.id}>
                             {crew.name}
@@ -236,7 +238,7 @@ export function OrderDetailModal({ order, crews, onClose }: OrderDetailModalProp
                     {/* Schedule Date/Time */}
                     <div>
                       <label htmlFor="scheduleDate" className="mb-2 block text-sm font-medium text-gray-700">
-                        Fecha y Hora *
+                        {t('schedule_date_label')} *
                       </label>
                       <input
                         id="scheduleDate"
@@ -271,14 +273,14 @@ export function OrderDetailModal({ order, crews, onClose }: OrderDetailModalProp
                         onClick={handleScheduleOrder}
                         className="flex-1 rounded-lg bg-blue-600 px-6 py-3 font-medium text-white hover:bg-blue-700"
                       >
-                        Confirmar Programación
+                        {t('schedule_button')}
                       </button>
                       <button
                         type="button"
                         onClick={() => setShowScheduling(false)}
                         className="rounded-lg border border-gray-300 px-6 py-3 font-medium text-gray-700 hover:bg-gray-50"
                       >
-                        Cancelar
+                        {t('close')}
                       </button>
                     </div>
                   </div>
@@ -290,7 +292,7 @@ export function OrderDetailModal({ order, crews, onClose }: OrderDetailModalProp
       case 'Completado':
         return (
           <div className="text-center text-sm text-gray-500">
-            Status:
+            {t('current_status')}:
             {' '}
             {order.status}
           </div>
@@ -347,36 +349,36 @@ export function OrderDetailModal({ order, crews, onClose }: OrderDetailModalProp
           {/* Order Details */}
           <div className="space-y-4">
             <div>
-              <div className="text-sm font-medium text-gray-500">Client</div>
+              <div className="text-sm font-medium text-gray-500">{t('client')}</div>
               <p className="mt-1 text-base font-medium text-gray-900">{order.clientName}</p>
             </div>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
-                <div className="text-sm font-medium text-gray-500">Unit Number</div>
+                <div className="text-sm font-medium text-gray-500">{t('unit')}</div>
                 <p className="mt-1 text-base font-medium text-gray-900">{order.unitNumber}</p>
               </div>
 
               <div>
-                <div className="text-sm font-medium text-gray-500">Glass Position</div>
+                <div className="text-sm font-medium text-gray-500">{t('glass_position')}</div>
                 <p className="mt-1 text-base font-medium text-gray-900">{order.glassPosition}</p>
               </div>
             </div>
 
             <div>
-              <div className="text-sm font-medium text-gray-500">Truck Model</div>
+              <div className="text-sm font-medium text-gray-500">{t('truck_model')}</div>
               <p className="mt-1 text-base font-medium text-gray-900">{order.truckModelName}</p>
             </div>
 
             {order.notes && (
               <div>
-                <div className="text-sm font-medium text-gray-500">Notes</div>
+                <div className="text-sm font-medium text-gray-500">{t('notes')}</div>
                 <p className="mt-1 text-base text-gray-700">{order.notes}</p>
               </div>
             )}
 
             <div>
-              <div className="text-sm font-medium text-gray-500">Created</div>
+              <div className="text-sm font-medium text-gray-500">{t('created_date')}</div>
               <p className="mt-1 text-sm text-gray-600">
                 {new Date(order.createdAt).toLocaleString()}
               </p>
