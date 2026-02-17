@@ -1,15 +1,15 @@
 'use client';
 
-import { useState, useMemo } from 'react';
-import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/navigation';
+import { useMemo, useState } from 'react';
 
-interface Client {
+type Client = {
   id: string;
   name: string;
-}
+};
 
-interface Order {
+type Order = {
   id: string;
   orderId: string;
   client: string;
@@ -18,12 +18,12 @@ interface Order {
   glassPosition: string;
   price?: number;
   completedAt?: string;
-}
+};
 
-interface BillingTabProps {
+type BillingTabProps = {
   clients: Client[];
   orders: Order[];
-}
+};
 
 export function BillingTab({ clients, orders }: BillingTabProps) {
   const t = useTranslations('BillingTab');
@@ -48,8 +48,10 @@ export function BillingTab({ clients, orders }: BillingTabProps) {
     }
 
     if (startDate && endDate) {
-      filtered = filtered.filter(o => {
-        if (!o.completedAt) return false;
+      filtered = filtered.filter((o) => {
+        if (!o.completedAt) {
+          return false;
+        }
         const completedDate = new Date(o.completedAt);
         return (
           completedDate >= new Date(startDate)
@@ -253,7 +255,7 @@ export function BillingTab({ clients, orders }: BillingTabProps) {
               <input
                 type="checkbox"
                 checked={selectedOrders.includes(order.id)}
-                onChange={e => {
+                onChange={(e) => {
                   if (e.target.checked) {
                     setSelectedOrders([...selectedOrders, order.id]);
                   } else {

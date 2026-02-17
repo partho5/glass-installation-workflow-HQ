@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { auth } from '@clerk/nextjs/server';
-import { redirect } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
+import { redirect } from 'next/navigation';
 import { CrewAssignmentManager } from '@/components/CrewAssignmentManager';
 import { getCrews } from '@/libs/NotionService';
 

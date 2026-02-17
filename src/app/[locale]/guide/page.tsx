@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'User Guide - Glass Installation Workflow System',
@@ -17,6 +18,15 @@ export default function UserGuidePage() {
           <p className="text-center text-xl text-blue-100">
             Complete User Guide - From Setup to Invoicing
           </p>
+          {/* Back to Dashboard Link */}
+          <div className="mt-4 text-center">
+            <Link
+              href="/dashboard"
+              className="inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3 font-bold text-blue-700 shadow-lg transition-all hover:scale-105 hover:bg-purple-50"
+            >
+              ← Back to Dashboard
+            </Link>
+          </div>
         </div>
       </header>
 
@@ -116,9 +126,9 @@ export default function UserGuidePage() {
 
         {/* Daily Workflow */}
         <section className="mb-16">
-          <div className="mb-8 rounded-2xl bg-gradient-to-r from-purple-500 to-pink-500 p-8 text-white shadow-xl">
+          <div className="mb-8 rounded-2xl bg-gradient-to-r from-purple-500 to-pink-500 p-8 pb-4 text-white shadow-xl">
             <h2 className="mb-4 flex items-center gap-3 text-3xl font-bold">
-              <span className="text-4xl">🚀</span>
+              <span className="text-4xl"></span>
               DAILY WORKFLOW
             </h2>
           </div>
@@ -391,30 +401,30 @@ export default function UserGuidePage() {
         <section className="mb-16">
           <div className="rounded-2xl bg-gradient-to-r from-indigo-500 to-blue-500 p-8 text-white shadow-xl">
             <h2 className="mb-6 text-center text-3xl font-bold">
-              🎯 STATUS FLOW
+              STATUS FLOW
             </h2>
             <div className="flex flex-wrap items-center justify-center gap-4 text-center">
-              <div className="rounded-lg bg-white/20 px-6 py-4 backdrop-blur">
+              <div className="rounded-lg bg-blue-900/80 px-6 py-4 backdrop-blur">
                 <div className="text-2xl font-bold">Pendiente</div>
                 <div className="text-sm">Created</div>
               </div>
               <div className="text-3xl">→</div>
-              <div className="rounded-lg bg-white/20 px-6 py-4 backdrop-blur">
+              <div className="rounded-lg bg-blue-900/80 px-6 py-4 backdrop-blur">
                 <div className="text-2xl font-bold">En Stock</div>
                 <div className="text-sm">Inventory Checked</div>
               </div>
               <div className="text-3xl">→</div>
-              <div className="rounded-lg bg-white/20 px-6 py-4 backdrop-blur">
+              <div className="rounded-lg bg-blue-900/80 px-6 py-4 backdrop-blur">
                 <div className="text-2xl font-bold">Programado</div>
                 <div className="text-sm">Assigned to Crew</div>
               </div>
               <div className="text-3xl">→</div>
-              <div className="rounded-lg bg-white/20 px-6 py-4 backdrop-blur">
+              <div className="rounded-lg bg-blue-900/80 px-6 py-4 backdrop-blur">
                 <div className="text-2xl font-bold">Completado</div>
                 <div className="text-sm">Job Done</div>
               </div>
               <div className="text-3xl">→</div>
-              <div className="rounded-lg bg-white/20 px-6 py-4 backdrop-blur">
+              <div className="rounded-lg bg-blue-900/80 px-6 py-4 backdrop-blur">
                 <div className="text-2xl font-bold">Facturado</div>
                 <div className="text-sm">Invoiced</div>
               </div>
@@ -491,9 +501,9 @@ export default function UserGuidePage() {
 
         {/* Benefits */}
         <section className="mb-16">
-          <div className="rounded-2xl bg-gradient-to-r from-green-500 to-teal-500 p-8 text-white shadow-xl">
+          <div className="rounded-2xl bg-gradient-to-r from-teal-700 to-green-900 p-8 text-white shadow-xl">
             <h2 className="mb-6 text-center text-3xl font-bold">
-              ✅ BUSINESS BENEFITS
+              BUSINESS BENEFITS
             </h2>
             <div className="grid gap-6 md:grid-cols-2">
               <div className="rounded-lg bg-white/20 p-6 backdrop-blur">
@@ -543,7 +553,7 @@ export default function UserGuidePage() {
         {/* Summary */}
         <section className="text-center">
           <div className="rounded-2xl bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 p-12 text-white shadow-2xl">
-            <h2 className="mb-4 text-4xl font-bold">That's It! 🎉</h2>
+            <h2 className="mb-4 text-4xl font-bold">That's It !</h2>
             <p className="mb-6 text-2xl">
               Create order → Assign crew → Complete job → Invoice customer
             </p>

@@ -1,7 +1,7 @@
 'use client';
 
-import { useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
+import { useRef, useState } from 'react';
 import SignatureCanvas from 'react-signature-canvas';
 import { uploadToCloudinary } from '@/libs/CloudinaryService';
 
@@ -40,8 +40,11 @@ export function SignaturePad({
       const canvas = sigCanvas.current.getCanvas();
       const blob = await new Promise<Blob>((resolve, reject) => {
         canvas.toBlob((b) => {
-          if (b) resolve(b);
-          else reject(new Error('Failed to create blob'));
+          if (b) {
+            resolve(b);
+          } else {
+            reject(new Error('Failed to create blob'));
+          }
         }, 'image/png');
       });
 
@@ -75,7 +78,7 @@ export function SignaturePad({
               setSignatureUrl('');
               onSignatureSave('');
             }}
-            className="absolute right-2 top-2 rounded-full bg-red-600 p-2 text-white shadow-lg hover:bg-red-700"
+            className="absolute top-2 right-2 rounded-full bg-red-600 p-2 text-white shadow-lg hover:bg-red-700"
           >
             <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />

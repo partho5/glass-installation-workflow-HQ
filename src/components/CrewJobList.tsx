@@ -1,7 +1,7 @@
 'use client';
 
-import Link from 'next/link';
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 
 type CrewJob = {
   id: string;
@@ -100,11 +100,11 @@ export function CrewJobList({ jobs }: CrewJobListProps) {
                   <div className="font-medium text-gray-900">
                     {job.scheduleDate
                       ? new Date(job.scheduleDate).toLocaleString('es-MX', {
-                        month: 'short',
-                        day: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                      })
+                          month: 'short',
+                          day: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit',
+                        })
                       : 'Sin fecha'}
                   </div>
                 </div>

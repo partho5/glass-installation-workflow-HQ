@@ -1,8 +1,8 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useMemo } from 'react';
-import { useTranslations } from 'next-intl';
 import { OrderDetailModal } from './OrderDetailModal';
 
 type Order = {
@@ -190,11 +190,17 @@ export function OrdersList({ orders, clients, truckModels, crews }: OrdersListPr
 
                           <div className="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
                             <div>
-                              <span className="font-medium text-gray-700">{t('client')}:</span>
+                              <span className="font-medium text-gray-700">
+                                {t('client')}
+                                :
+                              </span>
                               <span className="ml-2 text-gray-600">{order.clientName}</span>
                             </div>
                             <div>
-                              <span className="font-medium text-gray-700">{t('unit')}:</span>
+                              <span className="font-medium text-gray-700">
+                                {t('unit')}
+                                :
+                              </span>
                               <span className="ml-2 text-gray-600">{order.unitNumber}</span>
                             </div>
                             <div>
@@ -202,7 +208,10 @@ export function OrdersList({ orders, clients, truckModels, crews }: OrdersListPr
                               <span className="ml-2 text-gray-600">{order.truckModelName}</span>
                             </div>
                             <div>
-                              <span className="font-medium text-gray-700">{t('glass')}:</span>
+                              <span className="font-medium text-gray-700">
+                                {t('glass')}
+                                :
+                              </span>
                               <span className="ml-2 text-gray-600">{order.glassPosition}</span>
                             </div>
                           </div>
@@ -215,7 +224,8 @@ export function OrdersList({ orders, clients, truckModels, crews }: OrdersListPr
                           )}
 
                           <div className="mt-2 text-xs text-gray-500">
-                            {t('created')}:
+                            {t('created')}
+                            :
                             {' '}
                             {new Date(order.createdAt).toLocaleString()}
                           </div>

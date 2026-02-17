@@ -1,16 +1,16 @@
 import type { NextRequest } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
+import { pdf } from '@react-pdf/renderer';
 import { NextResponse } from 'next/server';
 import React from 'react';
-import { pdf } from '@react-pdf/renderer';
 import { InvoicePDF } from '@/components/InvoicePDF';
+import { uploadPDFToCloudinary } from '@/libs/CloudinaryService';
 import {
-  getCompletedOrdersByClient,
   getClients,
+  getCompletedOrdersByClient,
   getTruckModels,
   updateOrderToFacturado,
 } from '@/libs/NotionService';
-import { uploadPDFToCloudinary } from '@/libs/CloudinaryService';
 
 export async function POST(req: NextRequest) {
   try {

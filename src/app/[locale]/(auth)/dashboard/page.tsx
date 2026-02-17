@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
+import Link from 'next/link';
 import { BillingTab } from '@/components/BillingTab';
 import { DashboardTabs } from '@/components/DashboardTabs';
 import { OrderIntakeForm } from '@/components/OrderIntakeForm';
@@ -77,6 +77,16 @@ export default async function Dashboard({
           orders={orders.filter(o => o.status === 'Completado')}
         />
       )}
+
+      {/* Guide Link at Bottom */}
+      <div className="mt-8 text-center">
+        <Link
+          href="/guide"
+          className="text-sm text-gray-500 hover:text-gray-700 underline"
+        >
+          📖 View User Guide
+        </Link>
+      </div>
     </div>
   );
 }

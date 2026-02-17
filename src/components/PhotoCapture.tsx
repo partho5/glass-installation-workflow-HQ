@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
 import { useTranslations } from 'next-intl';
+import { useState } from 'react';
 import { uploadToCloudinary } from '@/libs/CloudinaryService';
 
 type PhotoCaptureProps = {
@@ -26,7 +26,9 @@ export function PhotoCapture({
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file) return;
+    if (!file) {
+      return;
+    }
 
     setUploading(true);
     setError('');
@@ -69,17 +71,19 @@ export function PhotoCapture({
                 : 'cursor-pointer hover:border-blue-500 hover:bg-blue-50'
             }`}
           >
-            {uploading ? (
-              <>
-                <span className="text-xl">⏳</span>
-                <span className="text-gray-600">{t('uploading')}</span>
-              </>
-            ) : (
-              <>
-                <span className="text-xl">📸</span>
-                <span className="text-gray-700">{t('upload_photo')}</span>
-              </>
-            )}
+            {uploading
+              ? (
+                  <>
+                    <span className="text-xl">⏳</span>
+                    <span className="text-gray-600">{t('uploading')}</span>
+                  </>
+                )
+              : (
+                  <>
+                    <span className="text-xl">📸</span>
+                    <span className="text-gray-700">{t('upload_photo')}</span>
+                  </>
+                )}
           </label>
         </div>
       )}
@@ -98,7 +102,7 @@ export function PhotoCapture({
               setPhotoUrl('');
               onPhotoCapture('');
             }}
-            className="absolute right-2 top-2 rounded-full bg-red-600 p-2 text-white shadow-lg hover:bg-red-700"
+            className="absolute top-2 right-2 rounded-full bg-red-600 p-2 text-white shadow-lg hover:bg-red-700"
           >
             <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />

@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
+import { useEffect, useState } from 'react';
 
 type Client = {
   id: string;
@@ -238,30 +238,36 @@ export function OrderIntakeForm({ clients, truckModels, glassPositions }: OrderI
           <div
             className={`rounded-md p-4 ${
               priceNotFound
-                ? 'bg-yellow-50 border border-yellow-200'
-                : 'bg-blue-50 border border-blue-200'
+                ? 'border border-yellow-200 bg-yellow-50'
+                : 'border border-blue-200 bg-blue-50'
             }`}
           >
-            {priceLoading ? (
-              <p className="text-sm text-gray-600">{t('price_loading')}</p>
-            ) : priceNotFound ? (
-              <>
-                <p className="text-sm font-semibold text-yellow-800">
-                  ⚠️ {t('price_not_found')}
-                </p>
-                <p className="mt-1 text-xs text-yellow-700">
-                  {t('price_not_found_hint')}
-                </p>
-              </>
-            ) : (
-              <p className="text-lg font-bold text-blue-900">
-                {t('price_label')}
-                : $
-                {pricePreview?.toFixed(2)}
-                {' '}
-                MXN
-              </p>
-            )}
+            {priceLoading
+              ? (
+                  <p className="text-sm text-gray-600">{t('price_loading')}</p>
+                )
+              : priceNotFound
+                ? (
+                    <>
+                      <p className="text-sm font-semibold text-yellow-800">
+                        ⚠️
+                        {' '}
+                        {t('price_not_found')}
+                      </p>
+                      <p className="mt-1 text-xs text-yellow-700">
+                        {t('price_not_found_hint')}
+                      </p>
+                    </>
+                  )
+                : (
+                    <p className="text-lg font-bold text-blue-900">
+                      {t('price_label')}
+                      : $
+                      {pricePreview?.toFixed(2)}
+                      {' '}
+                      MXN
+                    </p>
+                  )}
           </div>
         )}
 

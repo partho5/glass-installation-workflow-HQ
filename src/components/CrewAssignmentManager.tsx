@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
 import { useTranslations } from 'next-intl';
+import { useState } from 'react';
 
 type Crew = {
   id: string;
@@ -108,7 +108,9 @@ export function CrewAssignmentManager({ crews }: CrewAssignmentManagerProps) {
         <form onSubmit={handleAssign} className="space-y-4">
           <div>
             <label htmlFor="userEmail" className="block text-sm font-medium text-gray-700">
-              {t('user_email_label')} *
+              {t('user_email_label')}
+              {' '}
+              *
             </label>
             <input
               type="email"
@@ -126,7 +128,9 @@ export function CrewAssignmentManager({ crews }: CrewAssignmentManagerProps) {
 
           <div>
             <label htmlFor="crewId" className="block text-sm font-medium text-gray-700">
-              {t('select_crew_label')} *
+              {t('select_crew_label')}
+              {' '}
+              *
             </label>
             <select
               id="crewId"
@@ -140,7 +144,10 @@ export function CrewAssignmentManager({ crews }: CrewAssignmentManagerProps) {
                 <option key={crew.id} value={crew.id}>
                   {crew.name}
                   {' '}
-                  - {t('crew_lead')}:
+                  -
+                  {' '}
+                  {t('crew_lead')}
+                  :
                   {' '}
                   {crew.leadInstaller}
                   {' '}
@@ -190,19 +197,22 @@ export function CrewAssignmentManager({ crews }: CrewAssignmentManagerProps) {
                 <div>
                   <h3 className="font-semibold text-gray-900">{crew.name}</h3>
                   <p className="text-sm text-gray-600">
-                    {t('crew_lead')}:
+                    {t('crew_lead')}
+                    :
                     {' '}
                     {crew.leadInstaller}
                   </p>
                   {crew.phone && (
                     <p className="text-sm text-gray-600">
-                      {t('crew_phone')}:
+                      {t('crew_phone')}
+                      :
                       {' '}
                       {crew.phone}
                     </p>
                   )}
                   <p className="mt-1 text-xs text-gray-500">
-                    {t('crew_status')}:
+                    {t('crew_status')}
+                    :
                     {' '}
                     {crew.status}
                   </p>
@@ -221,7 +231,7 @@ export function CrewAssignmentManager({ crews }: CrewAssignmentManagerProps) {
                 <summary className="cursor-pointer text-xs text-blue-600 hover:text-blue-800">
                   {t('crew_id_advanced')}
                 </summary>
-                <code className="mt-1 block break-all rounded bg-gray-100 p-2 text-xs text-gray-700">
+                <code className="mt-1 block rounded bg-gray-100 p-2 text-xs break-all text-gray-700">
                   {crew.id}
                 </code>
               </details>
@@ -233,7 +243,9 @@ export function CrewAssignmentManager({ crews }: CrewAssignmentManagerProps) {
       {/* Instructions */}
       <div className="rounded-lg bg-blue-50 p-6">
         <h3 className="mb-2 font-semibold text-blue-900">
-          📋 {t('how_to_use')}
+          📋
+          {' '}
+          {t('how_to_use')}
         </h3>
         <ol className="list-inside list-decimal space-y-1 text-sm text-blue-800">
           {(t.raw('instructions') as string[]).map((instruction, index) => (

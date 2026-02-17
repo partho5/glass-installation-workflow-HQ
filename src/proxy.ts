@@ -15,6 +15,8 @@ const isProtectedRoute = createRouteMatcher([
   '/:locale/dashboard(.*)',
   '/crew-dashboard(.*)',
   '/:locale/crew-dashboard(.*)',
+  '/list-notion-dbs(.*)',
+  '/:locale/list-notion-dbs(.*)',
   '/api(.*)',
 ]);
 

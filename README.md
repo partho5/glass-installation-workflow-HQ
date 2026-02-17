@@ -226,14 +226,6 @@ npm run check:types  # TypeScript type checking
 - For production: Verify WhatsApp Business approval status
 - Check Twilio console for error logs
 
-## 📄 License
-
-MIT License - Copyright © 2025
-
-## 🤝 Contributing
-
-Contributions, issues, and feature requests are welcome!
-
 ---
 
 Built with ❤️ for glass installation businesses

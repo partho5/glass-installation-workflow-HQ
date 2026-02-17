@@ -1,8 +1,8 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { useTranslations } from 'next-intl';
 import { PhotoCapture } from './PhotoCapture';
 import { SignaturePad } from './SignaturePad';
 
@@ -26,15 +26,15 @@ export function JobExecutionWizard({ order }: JobExecutionWizardProps) {
   const progress = order.jobProgress;
   const [currentStep, setCurrentStep] = useState(progress?.currentStep || 1);
   const [beforePhotos, setBeforePhotos] = useState<string[]>(
-    progress?.beforePhotos || ['', '', '']
+    progress?.beforePhotos || ['', '', ''],
   );
   const [afterPhotos, setAfterPhotos] = useState<string[]>(
-    progress?.afterPhotos || ['']
+    progress?.afterPhotos || [''],
   );
   const [signatureUrl, setSignatureUrl] = useState(progress?.signatureUrl || '');
   const [customerName, setCustomerName] = useState(progress?.customerName || '');
   const [gpsLocation, setGpsLocation] = useState(
-    progress?.gpsLocation || { lat: 0, lng: 0 }
+    progress?.gpsLocation || { lat: 0, lng: 0 },
   );
   const [gpsError, setGpsError] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -226,7 +226,7 @@ export function JobExecutionWizard({ order }: JobExecutionWizardProps) {
                 </li>
               </ul>
 
-              <h4 className="mb-3 mt-6 text-base font-semibold text-blue-900">
+              <h4 className="mt-6 mb-3 text-base font-semibold text-blue-900">
                 {t('installation_steps')}
               </h4>
               <ol className="list-inside list-decimal space-y-2 text-sm text-blue-800">
@@ -242,7 +242,9 @@ export function JobExecutionWizard({ order }: JobExecutionWizardProps) {
 
             <div className="rounded-lg bg-yellow-50 p-4">
               <p className="text-sm font-medium text-yellow-800">
-                ⚠️ {t('curing_time_reminder')}
+                ⚠️
+                {' '}
+                {t('curing_time_reminder')}
               </p>
             </div>
           </div>
@@ -287,7 +289,9 @@ export function JobExecutionWizard({ order }: JobExecutionWizardProps) {
             {/* Customer Name */}
             <div>
               <label htmlFor="customerName" className="block text-sm font-medium text-gray-700">
-                {t('customer_name_label')} *
+                {t('customer_name_label')}
+                {' '}
+                *
               </label>
               <input
                 type="text"
@@ -310,27 +314,36 @@ export function JobExecutionWizard({ order }: JobExecutionWizardProps) {
             {/* GPS Status */}
             <div className="rounded-lg bg-gray-50 p-4">
               <h4 className="mb-2 text-sm font-semibold text-gray-700">
-                📍 {t('gps_location_label')}
+                📍
+                {' '}
+                {t('gps_location_label')}
               </h4>
-              {gpsLocation.lat !== 0 ? (
-                <p className="text-sm text-green-700">
-                  ✓ {t('gps_captured')}:
-                  {' '}
-                  {gpsLocation.lat.toFixed(6)}
-                  ,
-                  {gpsLocation.lng.toFixed(6)}
-                </p>
-              ) : gpsError ? (
-                <p className="text-sm text-yellow-700">
-                  ⚠️
-                  {' '}
-                  {gpsError}
-                </p>
-              ) : (
-                <p className="text-sm text-gray-600">
-                  {t('gps_capturing')}
-                </p>
-              )}
+              {gpsLocation.lat !== 0
+                ? (
+                    <p className="text-sm text-green-700">
+                      ✓
+                      {' '}
+                      {t('gps_captured')}
+                      :
+                      {' '}
+                      {gpsLocation.lat.toFixed(6)}
+                      ,
+                      {gpsLocation.lng.toFixed(6)}
+                    </p>
+                  )
+                : gpsError
+                  ? (
+                      <p className="text-sm text-yellow-700">
+                        ⚠️
+                        {' '}
+                        {gpsError}
+                      </p>
+                    )
+                  : (
+                      <p className="text-sm text-gray-600">
+                        {t('gps_capturing')}
+                      </p>
+                    )}
             </div>
           </div>
         );
@@ -349,22 +362,37 @@ export function JobExecutionWizard({ order }: JobExecutionWizardProps) {
 
             {/* Order Summary */}
             <div className="rounded-lg border border-gray-200 p-4">
-              <h4 className="mb-3 font-semibold text-gray-900">{t('job_details')}:</h4>
+              <h4 className="mb-3 font-semibold text-gray-900">
+                {t('job_details')}
+                :
+              </h4>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-gray-600">{t('order')}:</span>
+                  <span className="text-gray-600">
+                    {t('order')}
+                    :
+                  </span>
                   <span className="font-medium">{order.orderId}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600">{t('customer')}:</span>
+                  <span className="text-gray-600">
+                    {t('customer')}
+                    :
+                  </span>
                   <span className="font-medium">{order.clientName}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600">{t('unit')}:</span>
+                  <span className="text-gray-600">
+                    {t('unit')}
+                    :
+                  </span>
                   <span className="font-medium">{order.unitNumber}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600">{t('glass')}:</span>
+                  <span className="text-gray-600">
+                    {t('glass')}
+                    :
+                  </span>
                   <span className="font-medium">{order.glassPosition}</span>
                 </div>
               </div>
@@ -372,13 +400,31 @@ export function JobExecutionWizard({ order }: JobExecutionWizardProps) {
 
             {/* Evidence Summary */}
             <div className="rounded-lg bg-green-50 p-4">
-              <h4 className="mb-3 font-semibold text-green-900">{t('evidence_captured')}:</h4>
+              <h4 className="mb-3 font-semibold text-green-900">
+                {t('evidence_captured')}
+                :
+              </h4>
               <ul className="space-y-1 text-sm text-green-800">
-                <li>✓ {t('before_photos_check')}</li>
-                <li>✓ {t('after_photo_check')}</li>
-                <li>✓ {t('signature_check')} ({customerName})</li>
                 <li>
-                  ✓ {t('gps_check')}
+                  ✓
+                  {t('before_photos_check')}
+                </li>
+                <li>
+                  ✓
+                  {t('after_photo_check')}
+                </li>
+                <li>
+                  ✓
+                  {t('signature_check')}
+                  {' '}
+                  (
+                  {customerName}
+                  )
+                </li>
+                <li>
+                  ✓
+                  {' '}
+                  {t('gps_check')}
                   {gpsLocation.lat !== 0 ? '' : ` ${t('gps_optional')}`}
                 </li>
               </ul>
@@ -450,25 +496,27 @@ export function JobExecutionWizard({ order }: JobExecutionWizardProps) {
               </button>
             )}
 
-            {currentStep < 5 ? (
-              <button
-                type="button"
-                onClick={() => setCurrentStep(currentStep + 1)}
-                disabled={!canProceed()}
-                className="flex-1 rounded-lg bg-blue-600 px-6 py-3 font-medium text-white hover:bg-blue-700 disabled:opacity-50"
-              >
-                {t('next')}
-              </button>
-            ) : (
-              <button
-                type="button"
-                onClick={handleSubmit}
-                disabled={submitting || !canProceed()}
-                className="flex-1 rounded-lg bg-green-600 px-6 py-3 font-medium text-white hover:bg-green-700 disabled:opacity-50"
-              >
-                {submitting ? t('completing') : t('complete_job')}
-              </button>
-            )}
+            {currentStep < 5
+              ? (
+                  <button
+                    type="button"
+                    onClick={() => setCurrentStep(currentStep + 1)}
+                    disabled={!canProceed()}
+                    className="flex-1 rounded-lg bg-blue-600 px-6 py-3 font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+                  >
+                    {t('next')}
+                  </button>
+                )
+              : (
+                  <button
+                    type="button"
+                    onClick={handleSubmit}
+                    disabled={submitting || !canProceed()}
+                    className="flex-1 rounded-lg bg-green-600 px-6 py-3 font-medium text-white hover:bg-green-700 disabled:opacity-50"
+                  >
+                    {submitting ? t('completing') : t('complete_job')}
+                  </button>
+                )}
           </div>
         </div>
       </div>

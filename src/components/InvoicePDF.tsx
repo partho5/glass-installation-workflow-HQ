@@ -1,11 +1,11 @@
-import React from 'react';
 import {
   Document,
   Page,
+  StyleSheet,
   Text,
   View,
-  StyleSheet,
 } from '@react-pdf/renderer';
+import React from 'react';
 
 const styles = StyleSheet.create({
   page: { padding: 40, fontSize: 11, fontFamily: 'Helvetica' },
@@ -60,15 +60,15 @@ const styles = StyleSheet.create({
   },
 });
 
-export interface InvoiceItem {
+export type InvoiceItem = {
   orderId: string;
   unitNumber: string;
   truckModel: string;
   glassPosition: string;
   price: number;
-}
+};
 
-export interface InvoiceData {
+export type InvoiceData = {
   invoiceNumber: string;
   invoiceDate: string;
   clientName: string;
@@ -76,7 +76,7 @@ export interface InvoiceData {
   clientPhone: string;
   items: InvoiceItem[];
   total: number;
-}
+};
 
 export const InvoicePDF = ({ data }: { data: InvoiceData }) => (
   <Document>
@@ -122,11 +122,17 @@ export const InvoicePDF = ({ data }: { data: InvoiceData }) => (
         {data.items.map((item, idx) => (
           <View key={idx} style={styles.tableRow}>
             <Text style={styles.col1}>
-              {item.orderId} - {item.truckModel}
+              {item.orderId}
+              {' '}
+              -
+              {item.truckModel}
             </Text>
             <Text style={styles.col2}>{item.unitNumber}</Text>
             <Text style={styles.col3}>{item.glassPosition}</Text>
-            <Text style={styles.col4}>${item.price.toFixed(2)}</Text>
+            <Text style={styles.col4}>
+              $
+              {item.price.toFixed(2)}
+            </Text>
           </View>
         ))}
       </View>
@@ -134,7 +140,12 @@ export const InvoicePDF = ({ data }: { data: InvoiceData }) => (
       {/* Total */}
       <View style={styles.totalSection}>
         <View style={styles.totalRow}>
-          <Text>TOTAL: ${data.total.toFixed(2)} MXN</Text>
+          <Text>
+            TOTAL: $
+            {data.total.toFixed(2)}
+            {' '}
+            MXN
+          </Text>
         </View>
       </View>
 
@@ -142,7 +153,9 @@ export const InvoicePDF = ({ data }: { data: InvoiceData }) => (
       <View style={styles.footer}>
         <Text>Gracias por su preferencia</Text>
         <Text>
-          Generado el {new Date().toLocaleString('es-MX')}
+          Generado el
+          {' '}
+          {new Date().toLocaleString('es-MX')}
         </Text>
       </View>
     </Page>

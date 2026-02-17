@@ -1,8 +1,8 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { useTranslations } from 'next-intl';
 
 type OrderDetailModalProps = {
   order: {
@@ -210,7 +210,9 @@ export function OrderDetailModal({ order, crews, onClose }: OrderDetailModalProp
                     {/* Crew Selection */}
                     <div>
                       <label htmlFor="crewId" className="mb-2 block text-sm font-medium text-gray-700">
-                        {t('assigned_crew_label')} *
+                        {t('assigned_crew_label')}
+                        {' '}
+                        *
                       </label>
                       <select
                         id="crewId"
@@ -238,7 +240,9 @@ export function OrderDetailModal({ order, crews, onClose }: OrderDetailModalProp
                     {/* Schedule Date/Time */}
                     <div>
                       <label htmlFor="scheduleDate" className="mb-2 block text-sm font-medium text-gray-700">
-                        {t('schedule_date_label')} *
+                        {t('schedule_date_label')}
+                        {' '}
+                        *
                       </label>
                       <input
                         id="scheduleDate"
@@ -292,7 +296,8 @@ export function OrderDetailModal({ order, crews, onClose }: OrderDetailModalProp
       case 'Completado':
         return (
           <div className="text-center text-sm text-gray-500">
-            {t('current_status')}:
+            {t('current_status')}
+            :
             {' '}
             {order.status}
           </div>
