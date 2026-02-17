@@ -7,6 +7,8 @@ import { useMemo, useState } from 'react';
 type Client = {
   id: string;
   name: string;
+  phone?: string;
+  address?: string;
 };
 
 type Order = {
@@ -99,17 +101,24 @@ export function BillingTab({ clients, orders }: BillingTabProps) {
 
       // 2. Send via WhatsApp (optional - ask user first)
       const client = clients.find(c => c.id === selectedClientId);
-      if (
-        client
-        && confirm(t('confirm_send_whatsapp'))
-      ) {
+      // eslint-disable-next-line no-alert
+      if (client && window.confirm(t('confirm_send_whatsapp'))) {
+        // Validate client has phone number
+        if (!client.phone) {
+          throw new Error(
+            t('error_no_phone', { clientName: client.name }),
+          );
+        }
+
+        console.warn('[WhatsApp] Using client phone from Notion:', client.phone);
+
         const whatsappRes = await fetch(
           '/api/orders/send-invoice-whatsapp',
           {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              clientPhone: '5215551234567', // TODO: Get from client data
+              clientPhone: client.phone,
               invoiceNumber: invoiceData.invoiceNumber,
               pdfUrl: invoiceData.pdfUrl,
               clientName: client.name,
@@ -117,12 +126,15 @@ export function BillingTab({ clients, orders }: BillingTabProps) {
           },
         );
 
+        const whatsappData = await whatsappRes.json();
+
         if (!whatsappRes.ok) {
-          const errorData = await whatsappRes.json();
           throw new Error(
-            errorData.error || 'Failed to send WhatsApp',
+            whatsappData.error || 'Failed to send WhatsApp',
           );
         }
+
+        console.warn('[WhatsApp] Message sent successfully:', whatsappData);
       }
 
       setMessage({
@@ -221,6 +233,7 @@ export function BillingTab({ clients, orders }: BillingTabProps) {
           </h3>
           {selectedOrders.length > 0 && (
             <button
+              type="button"
               onClick={handleGenerateInvoice}
               disabled={loading}
               className="rounded-lg bg-purple-600 px-6 py-3 font-medium text-white hover:bg-purple-700 disabled:opacity-50"
@@ -250,6 +263,7 @@ export function BillingTab({ clients, orders }: BillingTabProps) {
           {filteredOrders.map(order => (
             <label
               key={order.id}
+              aria-label={order.orderId}
               className="flex cursor-pointer items-center gap-4 rounded-lg border p-4 hover:bg-gray-50"
             >
               <input

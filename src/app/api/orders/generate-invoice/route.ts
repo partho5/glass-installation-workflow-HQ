@@ -93,8 +93,8 @@ export async function POST(req: NextRequest) {
 
     // 8. GENERATE PDF
     const pdfElement = React.createElement(InvoicePDF, { data: invoiceData });
-    const pdfDoc = pdf(pdfElement);
-    const pdfBuffer = await pdfDoc.toBuffer();
+    const pdfDoc = pdf(pdfElement as any);
+    const pdfBuffer = await pdfDoc.toBuffer() as any;
 
     // 9. UPLOAD TO CLOUDINARY
     const pdfUrl = await uploadPDFToCloudinary(

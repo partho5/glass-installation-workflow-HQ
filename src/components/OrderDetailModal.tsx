@@ -15,6 +15,10 @@ type OrderDetailModalProps = {
     status: string;
     notes: string;
     createdAt: string;
+    crewName?: string;
+    scheduledDate?: string | null;
+    invoiceNumber?: string | null;
+    invoicePdfUrl?: string | null;
   };
   crews: { id: string; name: string; leadInstaller: string; phone: string; status: string }[];
   onClose: () => void;
@@ -293,6 +297,126 @@ export function OrderDetailModal({ order, crews, onClose }: OrderDetailModalProp
         );
 
       case 'Programado':
+        return (
+          <div className="space-y-3">
+            <h3 className="text-sm font-semibold text-gray-700">{t('reassign_crew')}</h3>
+            {!showScheduling
+              ? (
+                  <button
+                    type="button"
+                    onClick={() => setShowScheduling(true)}
+                    className="flex w-full items-center justify-center gap-2 rounded-lg bg-orange-600 px-6 py-4 text-base font-medium text-white transition-colors hover:bg-orange-700 active:bg-orange-800"
+                  >
+                    <span className="text-xl">🔄</span>
+                    <span>{t('change_assignment')}</span>
+                  </button>
+                )
+              : (
+                  <div className="space-y-4 rounded-lg border border-gray-200 bg-gray-50 p-4">
+                    {/* Current Assignment Info */}
+                    {order.crewName && (
+                      <div className="rounded-lg bg-blue-50 p-3 text-sm">
+                        <p className="font-medium text-blue-900">
+                          {t('currently_assigned')}
+                          :
+                          {' '}
+                          {order.crewName}
+                        </p>
+                        {order.scheduledDate && (
+                          <p className="text-blue-700">
+                            {t('scheduled_for')}
+                            :
+                            {' '}
+                            {new Date(order.scheduledDate).toLocaleDateString()}
+                          </p>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Crew Selector */}
+                    <div>
+                      <label htmlFor="crew" className="block text-sm font-medium text-gray-700">
+                        {t('assigned_crew_label')}
+                        {' '}
+                        <span className="text-red-500">*</span>
+                      </label>
+                      <select
+                        id="crew"
+                        value={crewId}
+                        onChange={e => setCrewId(e.target.value)}
+                        className="mt-2 w-full rounded-lg border border-gray-300 px-4 py-3 text-base"
+                        required
+                      >
+                        <option value="">{t('assigned_crew_placeholder')}</option>
+                        {crews.map(crew => (
+                          <option key={crew.id} value={crew.id}>
+                            {crew.name}
+                            {' '}
+                            -
+                            {' '}
+                            {crew.leadInstaller}
+                            {' '}
+                            {crew.status === 'Disponible' ? '✅' : '⚠️'}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* Schedule Date */}
+                    <div>
+                      <label htmlFor="scheduleDate" className="block text-sm font-medium text-gray-700">
+                        {t('schedule_date_label')}
+                        {' '}
+                        <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="date"
+                        id="scheduleDate"
+                        value={scheduleDate}
+                        onChange={e => setScheduleDate(e.target.value)}
+                        className="mt-2 w-full rounded-lg border border-gray-300 px-4 py-3 text-base"
+                        required
+                      />
+                    </div>
+
+                    {/* Material Checklist */}
+                    <div className="rounded-lg bg-gray-50 p-4">
+                      <h4 className="mb-2 text-sm font-semibold text-gray-700">Material Checklist:</h4>
+                      <ul className="space-y-1 text-sm text-gray-600">
+                        <li>
+                          ✓
+                          {order.glassPosition}
+                          {' '}
+                          -
+                          {order.truckModelName}
+                        </li>
+                        <li>✓ Uretano</li>
+                        <li>✓ Molduras</li>
+                      </ul>
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="flex gap-3">
+                      <button
+                        type="button"
+                        onClick={handleScheduleOrder}
+                        className="flex-1 rounded-lg bg-orange-600 px-6 py-3 font-medium text-white hover:bg-orange-700"
+                      >
+                        {t('reassign_button')}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setShowScheduling(false)}
+                        className="rounded-lg border border-gray-300 px-6 py-3 font-medium text-gray-700 hover:bg-gray-50"
+                      >
+                        {t('close')}
+                      </button>
+                    </div>
+                  </div>
+                )}
+          </div>
+        );
+
       case 'Completado':
         return (
           <div className="text-center text-sm text-gray-500">
@@ -300,6 +424,94 @@ export function OrderDetailModal({ order, crews, onClose }: OrderDetailModalProp
             :
             {' '}
             {order.status}
+          </div>
+        );
+
+      case 'Facturado':
+        return (
+          <div className="space-y-4">
+            {order.invoiceNumber && (
+              <div className="rounded-lg bg-green-50 p-4 text-center">
+                <p className="text-sm font-medium text-green-900">
+                  ✅
+                  {' '}
+                  {t('invoice_generated')}
+                </p>
+                <p className="mt-1 text-2xl font-bold text-green-700">
+                  {order.invoiceNumber}
+                </p>
+              </div>
+            )}
+
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              {/* Download Invoice Button */}
+              {order.invoicePdfUrl && (
+                <a
+                  href={order.invoicePdfUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-6 py-4 text-base font-medium text-white transition-colors hover:bg-blue-700"
+                >
+                  <span className="text-xl">📄</span>
+                  <span>{t('download_invoice')}</span>
+                </a>
+              )}
+
+              {/* Send WhatsApp Button */}
+              <button
+                type="button"
+                onClick={async () => {
+                  if (!order.invoicePdfUrl || !order.invoiceNumber) {
+                    // eslint-disable-next-line no-alert
+                    window.alert(t('no_invoice_data'));
+                    return;
+                  }
+
+                  // eslint-disable-next-line no-alert
+                  const clientPhone = window.prompt(
+                    t('enter_client_phone'),
+                    '',
+                  );
+
+                  if (!clientPhone) {
+                    return;
+                  }
+
+                  try {
+                    setLoading(true);
+                    const response = await fetch('/api/orders/send-invoice-whatsapp', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({
+                        clientPhone,
+                        invoiceNumber: order.invoiceNumber,
+                        pdfUrl: order.invoicePdfUrl,
+                        clientName: order.clientName,
+                      }),
+                    });
+
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                      throw new Error(data.error || 'Failed to send');
+                    }
+
+                    // eslint-disable-next-line no-alert
+                    window.alert(t('whatsapp_sent_success'));
+                  } catch (error: any) {
+                    // eslint-disable-next-line no-alert
+                    window.alert(`${t('whatsapp_send_error')}: ${error.message}`);
+                  } finally {
+                    setLoading(false);
+                  }
+                }}
+                disabled={loading || !order.invoicePdfUrl}
+                className="flex items-center justify-center gap-2 rounded-lg bg-green-600 px-6 py-4 text-base font-medium text-white transition-colors hover:bg-green-700 disabled:opacity-50"
+              >
+                <span className="text-xl">📱</span>
+                <span>{loading ? t('sending') : t('send_whatsapp')}</span>
+              </button>
+            </div>
           </div>
         );
 
@@ -374,6 +586,28 @@ export function OrderDetailModal({ order, crews, onClose }: OrderDetailModalProp
               <div className="text-sm font-medium text-gray-500">{t('truck_model')}</div>
               <p className="mt-1 text-base font-medium text-gray-900">{order.truckModelName}</p>
             </div>
+
+            {order.crewName && (
+              <div>
+                <div className="text-sm font-medium text-gray-500">{t('assigned_to')}</div>
+                <p className="mt-1 text-base font-medium text-gray-900">
+                  👥
+                  {' '}
+                  {order.crewName}
+                </p>
+              </div>
+            )}
+
+            {order.scheduledDate && (
+              <div>
+                <div className="text-sm font-medium text-gray-500">{t('scheduled_date')}</div>
+                <p className="mt-1 text-base font-medium text-gray-900">
+                  📅
+                  {' '}
+                  {new Date(order.scheduledDate).toLocaleDateString()}
+                </p>
+              </div>
+            )}
 
             {order.notes && (
               <div>

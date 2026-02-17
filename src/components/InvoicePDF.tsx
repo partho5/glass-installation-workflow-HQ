@@ -5,7 +5,6 @@ import {
   Text,
   View,
 } from '@react-pdf/renderer';
-import React from 'react';
 
 const styles = StyleSheet.create({
   page: { padding: 40, fontSize: 11, fontFamily: 'Helvetica' },

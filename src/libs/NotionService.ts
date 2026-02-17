@@ -29,6 +29,8 @@ export async function getClients() {
     return response.results.map((page: any) => ({
       id: page.id,
       name: page.properties['Company Name']?.title?.[0]?.plain_text || 'Unnamed',
+      phone: page.properties.Phone?.phone_number || page.properties.Phone?.rich_text?.[0]?.plain_text || '',
+      address: page.properties.Address?.rich_text?.[0]?.plain_text || '',
     }));
   } catch (error) {
     console.error('Error fetching clients:', error);
@@ -81,6 +83,12 @@ export async function getPricingForOrder(
   glassPosition: string,
 ): Promise<number | null> {
   try {
+    console.warn('[Pricing Lookup] Searching for:', {
+      clientId,
+      truckModelId,
+      glassPosition,
+    });
+
     const response = await notion.dataSources.query({
       data_source_id: DB_IDS.pricing,
       filter: {
@@ -101,10 +109,14 @@ export async function getPricingForOrder(
       },
     });
 
+    console.warn('[Pricing Lookup] Results found:', response.results.length);
+
     // If matching price found, return it
     if (response.results.length > 0) {
       const pricingPage: any = response.results[0];
-      return pricingPage.properties.Price?.number || null;
+      const price = pricingPage.properties.Price?.number || null;
+      console.warn('[Pricing Lookup] Price found:', price);
+      return price;
     }
 
     // No matching price found
@@ -298,6 +310,10 @@ export async function getOrders(filters?: {
       status: page.properties.Status?.select?.name || 'Pendiente',
       notes: page.properties.Notes?.rich_text?.[0]?.plain_text || '',
       createdAt: page.created_time, // Use built-in created_time
+      assignedCrew: page.properties['Assigned Crew']?.relation?.[0]?.id || null,
+      scheduledDate: page.properties['Scheduled Date']?.date?.start || null,
+      invoiceNumber: page.properties['Invoice Number']?.rich_text?.[0]?.plain_text || null,
+      invoicePdfUrl: page.properties['Invoice PDF URL']?.url || null,
     }));
   } catch (error) {
     console.error('Error fetching orders:', error);
@@ -708,7 +724,7 @@ export async function updateOrderToFacturado(
 ) {
   try {
     const now = new Date();
-    const invoiceDate = now.toISOString().split('T')[0]; // YYYY-MM-DD format
+    const invoiceDate = now.toISOString().split('T')[0] ?? now.toISOString().substring(0, 10); // YYYY-MM-DD format
 
     const response = await notion.pages.update({
       page_id: pageId,

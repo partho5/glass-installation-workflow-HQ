@@ -80,6 +80,7 @@
   "DashboardTabs": {
     "create_order": "Create Order",
     "all_orders": "All Orders",
+    "crew_management": "Crew Management",
     "billing": "Billing"
   },
   "BillingTab": {
@@ -95,7 +96,9 @@
     "no_completed_orders": "No completed orders",
     "error_select_client": "Please select a client",
     "error_select_orders": "Please select at least one order",
+    "error_no_phone": "Client {clientName} has no phone number registered in Notion",
     "confirm_send_whatsapp": "Send invoice via WhatsApp to client?",
+    "enter_client_phone": "Enter client's WhatsApp number (with country code)",
     "success": "Invoice {invoiceNumber} generated and sent successfully",
     "error": "Error generating invoice"
   },
@@ -146,6 +149,8 @@
     "truck_model": "Model",
     "glass_position": "Glass Position",
     "created_date": "Created Date",
+    "assigned_to": "Assigned to",
+    "scheduled_date": "Scheduled Date",
     "notes": "Notes",
     "no_notes": "No notes",
     "current_status": "Current Status",
@@ -161,6 +166,11 @@
     "mark_in_stock": "Mark In Stock",
     "mark_out_of_stock": "Mark Out of Stock",
     "schedule_installation": "Schedule Installation",
+    "reassign_crew": "Reassign Crew",
+    "change_assignment": "Change Assignment",
+    "currently_assigned": "Currently assigned",
+    "scheduled_for": "Scheduled for",
+    "reassign_button": "Reassign",
     "assigned_crew_label": "Assigned Crew",
     "assigned_crew_placeholder": "Select a crew...",
     "schedule_date_label": "Schedule Date",
@@ -169,8 +179,6 @@
     "schedule_success": "Installation scheduled successfully!",
     "schedule_error": "Failed to schedule. Please try again.",
     "installation_details": "Installation Details",
-    "scheduled_for": "Scheduled for",
-    "assigned_to": "Assigned to",
     "completion_details": "Completion Details",
     "completed_at": "Completed at",
     "completed_by": "Completed by",
@@ -181,7 +189,15 @@
     "customer_signature": "Customer Signature",
     "close": "Close",
     "updating": "Updating...",
-    "update_error": "Failed to update status"
+    "update_error": "Failed to update status",
+    "invoice_generated": "Invoice Generated",
+    "download_invoice": "Download Invoice",
+    "send_whatsapp": "Send via WhatsApp",
+    "sending": "Sending...",
+    "no_invoice_data": "No invoice data available",
+    "whatsapp_sent_success": "✅ Invoice sent via WhatsApp successfully",
+    "whatsapp_send_error": "Error sending WhatsApp",
+    "enter_client_phone": "Enter client's WhatsApp number (with country code)"
   },
   "CrewDashboard": {
     "meta_title": "Crew Dashboard",

@@ -16,7 +16,7 @@ const baseConfig: NextConfig = {
     '/': ['./migrations/**/*'],
   },
   experimental: {
-    turbopackFileSystemCacheForDev: true,
+    turbopackFileSystemCacheForDev: false,
   },
 };
 

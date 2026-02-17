@@ -17,6 +17,11 @@ type Order = {
   status: string;
   notes: string;
   createdAt: string;
+  assignedCrew?: string | null;
+  crewName?: string;
+  scheduledDate?: string | null;
+  invoiceNumber?: string | null;
+  invoicePdfUrl?: string | null;
 };
 
 type OrdersListProps = {
@@ -45,13 +50,15 @@ export function OrdersList({ orders, clients, truckModels, crews }: OrdersListPr
   // Create lookup maps for client and truck model names - memoized to avoid recreating on every render
   const clientMap = useMemo(() => new Map(clients.map(c => [c.id, c.name])), [clients]);
   const truckModelMap = useMemo(() => new Map(truckModels.map(t => [t.id, `${t.manufacturer} ${t.model}`])), [truckModels]);
+  const crewMap = useMemo(() => new Map(crews.map(c => [c.id, c.name])), [crews]);
 
   // Enhance orders with resolved names using useMemo to avoid dependency issues
   const enhancedOrders = useMemo(() => orders.map(order => ({
     ...order,
     clientName: clientMap.get(order.client) || 'Unknown Client',
     truckModelName: truckModelMap.get(order.truckModel) || 'Unknown Model',
-  })), [orders, clientMap, truckModelMap]);
+    crewName: order.assignedCrew ? crewMap.get(order.assignedCrew) || 'Unknown Crew' : undefined,
+  })), [orders, clientMap, truckModelMap, crewMap]);
 
   // Derive selected order from URL and orders instead of using effect
   const selectedOrder = useMemo(() => {

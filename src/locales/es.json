@@ -80,6 +80,7 @@
   "DashboardTabs": {
     "create_order": "Crear Orden",
     "all_orders": "Todas las Órdenes",
+    "crew_management": "Gestión de Equipos",
     "billing": "Facturación"
   },
   "BillingTab": {
@@ -95,7 +96,9 @@
     "no_completed_orders": "No hay órdenes completadas",
     "error_select_client": "Seleccione un cliente",
     "error_select_orders": "Seleccione al menos una orden",
+    "error_no_phone": "El cliente {clientName} no tiene número de teléfono registrado en Notion",
     "confirm_send_whatsapp": "¿Enviar factura por WhatsApp al cliente?",
+    "enter_client_phone": "Ingrese el número de WhatsApp del cliente (con código de país)",
     "success": "Factura {invoiceNumber} generada y enviada exitosamente",
     "error": "Error al generar factura"
   },
@@ -146,6 +149,8 @@
     "truck_model": "Modelo",
     "glass_position": "Posición del Vidrio",
     "created_date": "Fecha de Creación",
+    "assigned_to": "Asignado a",
+    "scheduled_date": "Fecha Programada",
     "notes": "Notas",
     "no_notes": "Sin notas",
     "current_status": "Estado Actual",
@@ -161,6 +166,11 @@
     "mark_in_stock": "Marcar En Stock",
     "mark_out_of_stock": "Marcar Sin Stock",
     "schedule_installation": "Programar Instalación",
+    "reassign_crew": "Reasignar Equipo",
+    "change_assignment": "Cambiar Asignación",
+    "currently_assigned": "Actualmente asignado",
+    "scheduled_for": "Programado para",
+    "reassign_button": "Reasignar",
     "assigned_crew_label": "Equipo Asignado",
     "assigned_crew_placeholder": "Seleccione un equipo...",
     "schedule_date_label": "Fecha Programada",
@@ -169,8 +179,6 @@
     "schedule_success": "¡Instalación programada exitosamente!",
     "schedule_error": "Error al programar. Por favor intente nuevamente.",
     "installation_details": "Detalles de Instalación",
-    "scheduled_for": "Programado para",
-    "assigned_to": "Asignado a",
     "completion_details": "Detalles de Finalización",
     "completed_at": "Completado en",
     "completed_by": "Completado por",
@@ -181,7 +189,15 @@
     "customer_signature": "Firma del Cliente",
     "close": "Cerrar",
     "updating": "Actualizando...",
-    "update_error": "Error al actualizar el estado"
+    "update_error": "Error al actualizar el estado",
+    "invoice_generated": "Factura Generada",
+    "download_invoice": "Descargar Factura",
+    "send_whatsapp": "Enviar por WhatsApp",
+    "sending": "Enviando...",
+    "no_invoice_data": "No hay datos de factura disponibles",
+    "whatsapp_sent_success": "✅ Factura enviada por WhatsApp exitosamente",
+    "whatsapp_send_error": "Error al enviar WhatsApp",
+    "enter_client_phone": "Ingrese el número de WhatsApp del cliente (con código de país)"
   },
   "CrewDashboard": {
     "meta_title": "Panel de Equipo",

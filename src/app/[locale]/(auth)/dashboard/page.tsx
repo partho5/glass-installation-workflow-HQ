@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 import { BillingTab } from '@/components/BillingTab';
+import { CrewAssignmentManager } from '@/components/CrewAssignmentManager';
 import { DashboardTabs } from '@/components/DashboardTabs';
 import { OrderIntakeForm } from '@/components/OrderIntakeForm';
 import { OrdersList } from '@/components/OrdersList';
@@ -21,7 +22,6 @@ export default async function Dashboard({
 }) {
   const params = await searchParams;
   const currentView = params.view || 'create';
-  const t = await getTranslations('AdminPanel');
 
   // Fetch all data from Notion
   const [clients, truckModels, orders, crews] = await Promise.all([
@@ -30,28 +30,12 @@ export default async function Dashboard({
     currentView === 'orders' || currentView === 'billing'
       ? getOrders()
       : Promise.resolve([]),
-    currentView === 'orders' ? getCrews() : Promise.resolve([]),
+    currentView === 'orders' || currentView === 'crew' ? getCrews() : Promise.resolve([]),
   ]);
   const glassPositions = getGlassPositions();
 
   return (
     <div className="space-y-6">
-      {/* Admin Quick Links */}
-      <div className="flex items-center justify-between rounded-lg bg-gradient-to-r from-purple-600 to-purple-700 p-4 text-white shadow">
-        <div>
-          <h2 className="text-lg font-semibold">{t('title')}</h2>
-          <p className="text-sm text-purple-100">{t('description')}</p>
-        </div>
-        <Link
-          href="/dashboard/crew-management"
-          className="rounded-lg bg-white px-6 py-3 font-medium text-purple-700 transition-colors hover:bg-purple-50"
-        >
-          👥
-          {' '}
-          {t('crew_management')}
-        </Link>
-      </div>
-
       {/* Main Tabs */}
       <DashboardTabs />
 
@@ -71,6 +55,9 @@ export default async function Dashboard({
           crews={crews}
         />
       )}
+      {currentView === 'crew' && (
+        <CrewAssignmentManager crews={crews} />
+      )}
       {currentView === 'billing' && (
         <BillingTab
           clients={clients}
@@ -82,7 +69,7 @@ export default async function Dashboard({
       <div className="mt-8 text-center">
         <Link
           href="/guide"
-          className="text-sm text-gray-500 hover:text-gray-700 underline"
+          className="text-sm text-gray-500 underline hover:text-gray-700"
         >
           📖 View User Guide
         </Link>
