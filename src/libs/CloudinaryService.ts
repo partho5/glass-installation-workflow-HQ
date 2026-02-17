@@ -2,6 +2,9 @@
  * Cloudinary Service for uploading photos and signatures
  * Uses unsigned upload preset for direct browser uploads
  */
+import crypto from 'node:crypto';
+import axios from 'axios';
+import NodeFormData from 'form-data';
 
 const CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME!;
 const UPLOAD_PRESET = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET!;
@@ -96,37 +99,47 @@ export async function uploadToCloudinary(
   }
 }
 
+const API_KEY = process.env.CLOUDINARY_API_KEY!;
+const API_SECRET = process.env.CLOUDINARY_API_SECRET!;
+
 /**
- * Upload PDF invoice to Cloudinary (Server-side)
+ * Upload PDF invoice to Cloudinary (Server-side, signed upload)
+ * Uses API key + secret to bypass "untrusted account" delivery restrictions.
  * @param pdfBuffer - The PDF buffer to upload
  * @param clientId - Client ID for organizing uploads
  * @param fileName - Name of the PDF file (e.g., INV-202602-0001.pdf)
  * @returns Public URL of uploaded PDF
  */
+
 export async function uploadPDFToCloudinary(
+  // eslint-disable-next-line node/prefer-global/buffer
   pdfBuffer: Buffer,
   clientId: string,
   fileName: string,
 ): Promise<string> {
   try {
-    // Use axios + form-data for Node.js server-side upload
-    const axios = require('axios');
-    const FormData = require('form-data');
-    const formData = new FormData();
+    const folder = `glass-orders/${clientId}/invoices`;
+    const timestamp = Math.round(Date.now() / 1000);
 
-    // Append PDF buffer with proper options
-    formData.append('file', pdfBuffer, {
-      filename: fileName,
-      contentType: 'application/pdf',
-    });
-    formData.append('upload_preset', UPLOAD_PRESET);
-    formData.append('folder', `glass-orders/${clientId}/invoices`);
-    formData.append('resource_type', 'raw'); // CRITICAL: 'raw' for PDFs
-    formData.append('context', `client_id=${clientId}|type=invoice`);
+    // Build the signature: sort params alphabetically, join, append API secret
+    // Do NOT include: file, api_key, resource_type, url
+    const paramsToSign: Record<string, string | number> = { folder, timestamp };
+    const signatureString
+      = Object.entries(paramsToSign)
+        .sort(([a], [b]) => a.localeCompare(b))
+        .map(([k, v]) => `${k}=${v}`)
+        .join('&') + API_SECRET;
+    const signature = crypto.createHash('sha1').update(signatureString).digest('hex');
 
-    // Use axios which handles form-data properly in Node.js
+    const formData = new NodeFormData();
+    formData.append('file', pdfBuffer, { filename: fileName, contentType: 'application/pdf' });
+    formData.append('api_key', API_KEY);
+    formData.append('timestamp', String(timestamp));
+    formData.append('signature', signature);
+    formData.append('folder', folder);
+
     const response = await axios.post(
-      `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/upload`,
+      `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/raw/upload`,
       formData,
       {
         headers: formData.getHeaders(),
@@ -135,7 +148,7 @@ export async function uploadPDFToCloudinary(
       },
     );
 
-    return response.data.secure_url; // HTTPS URL
+    return response.data.secure_url;
   } catch (error: any) {
     console.error('Error uploading PDF to Cloudinary:', error.response?.data || error);
     throw new Error(

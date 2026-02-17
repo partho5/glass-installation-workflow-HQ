@@ -41,12 +41,9 @@ export async function POST(req: NextRequest) {
     const { clientPhone, invoiceNumber, pdfUrl, clientName } = body;
 
     // 4. VALIDATE
-    if (!clientPhone || !pdfUrl || !invoiceNumber) {
+    if (!clientPhone || !pdfUrl) {
       return NextResponse.json(
-        {
-          error:
-            'Missing required fields: clientPhone, pdfUrl, invoiceNumber',
-        },
+        { error: 'Missing required fields: clientPhone, pdfUrl' },
         { status: 400 },
       );
     }
@@ -64,11 +61,11 @@ export async function POST(req: NextRequest) {
     });
 
     // 6. SEND WHATSAPP MESSAGE
+    // PDF sent as link in body (more reliable than mediaUrl which requires Twilio to download the file)
     const message = await client.messages.create({
       from: twilioWhatsAppNumber,
       to: formattedPhone,
-      body: `Hola ${clientName || ''},\n\nAdjuntamos su factura #${invoiceNumber}.\n\nGracias por su confianza.`,
-      mediaUrl: [pdfUrl],
+      body: `Hola ${clientName || ''},\n\nAdjuntamos su factura #${invoiceNumber}.\n\n📄 Descargar PDF:\n${pdfUrl}\n\nGracias por su confianza.`,
     });
 
     // 6. RETURN SUCCESS

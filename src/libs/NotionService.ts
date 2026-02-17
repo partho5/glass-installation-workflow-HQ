@@ -29,7 +29,7 @@ export async function getClients() {
     return response.results.map((page: any) => ({
       id: page.id,
       name: page.properties['Company Name']?.title?.[0]?.plain_text || 'Unnamed',
-      phone: page.properties.Phone?.phone_number || page.properties.Phone?.rich_text?.[0]?.plain_text || '',
+      phone: page.properties.WhatsApp?.phone_number || '',
       address: page.properties.Address?.rich_text?.[0]?.plain_text || '',
     }));
   } catch (error) {
@@ -312,7 +312,9 @@ export async function getOrders(filters?: {
       createdAt: page.created_time, // Use built-in created_time
       assignedCrew: page.properties['Assigned Crew']?.relation?.[0]?.id || null,
       scheduledDate: page.properties['Scheduled Date']?.date?.start || null,
-      invoiceNumber: page.properties['Invoice Number']?.rich_text?.[0]?.plain_text || null,
+      invoiceNumber: page.properties['Invoice Number']?.rich_text?.[0]?.plain_text
+        || page.properties['Invoice Number']?.title?.[0]?.plain_text
+        || null,
       invoicePdfUrl: page.properties['Invoice PDF URL']?.url || null,
     }));
   } catch (error) {

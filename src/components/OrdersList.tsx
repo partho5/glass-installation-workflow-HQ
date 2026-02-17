@@ -19,6 +19,7 @@ type Order = {
   createdAt: string;
   assignedCrew?: string | null;
   crewName?: string;
+  clientPhone?: string;
   scheduledDate?: string | null;
   invoiceNumber?: string | null;
   invoicePdfUrl?: string | null;
@@ -27,7 +28,7 @@ type Order = {
 type OrdersListProps = {
   crews: { id: string; name: string; leadInstaller: string; phone: string; status: string }[];
   orders: Order[];
-  clients: { id: string; name: string }[];
+  clients: { id: string; name: string; phone: string }[];
   truckModels: { id: string; model: string; manufacturer: string }[];
 };
 
@@ -48,14 +49,15 @@ export function OrdersList({ orders, clients, truckModels, crews }: OrdersListPr
   const selectedOrderId = searchParams.get('orderId');
 
   // Create lookup maps for client and truck model names - memoized to avoid recreating on every render
-  const clientMap = useMemo(() => new Map(clients.map(c => [c.id, c.name])), [clients]);
+  const clientMap = useMemo(() => new Map(clients.map(c => [c.id, c])), [clients]);
   const truckModelMap = useMemo(() => new Map(truckModels.map(t => [t.id, `${t.manufacturer} ${t.model}`])), [truckModels]);
   const crewMap = useMemo(() => new Map(crews.map(c => [c.id, c.name])), [crews]);
 
   // Enhance orders with resolved names using useMemo to avoid dependency issues
   const enhancedOrders = useMemo(() => orders.map(order => ({
     ...order,
-    clientName: clientMap.get(order.client) || 'Unknown Client',
+    clientName: clientMap.get(order.client)?.name || 'Unknown Client',
+    clientPhone: clientMap.get(order.client)?.phone || '',
     truckModelName: truckModelMap.get(order.truckModel) || 'Unknown Model',
     crewName: order.assignedCrew ? crewMap.get(order.assignedCrew) || 'Unknown Crew' : undefined,
   })), [orders, clientMap, truckModelMap, crewMap]);

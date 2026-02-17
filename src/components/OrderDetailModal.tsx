@@ -17,6 +17,7 @@ type OrderDetailModalProps = {
     createdAt: string;
     crewName?: string;
     scheduledDate?: string | null;
+    clientPhone?: string;
     invoiceNumber?: string | null;
     invoicePdfUrl?: string | null;
   };
@@ -461,19 +462,16 @@ export function OrderDetailModal({ order, crews, onClose }: OrderDetailModalProp
               <button
                 type="button"
                 onClick={async () => {
-                  if (!order.invoicePdfUrl || !order.invoiceNumber) {
+                  if (!order.invoicePdfUrl) {
                     // eslint-disable-next-line no-alert
                     window.alert(t('no_invoice_data'));
                     return;
                   }
 
-                  // eslint-disable-next-line no-alert
-                  const clientPhone = window.prompt(
-                    t('enter_client_phone'),
-                    '',
-                  );
-
+                  const clientPhone = order.clientPhone;
                   if (!clientPhone) {
+                    // eslint-disable-next-line no-alert
+                    window.alert(t('enter_client_phone'));
                     return;
                   }
 
@@ -484,7 +482,7 @@ export function OrderDetailModal({ order, crews, onClose }: OrderDetailModalProp
                       headers: { 'Content-Type': 'application/json' },
                       body: JSON.stringify({
                         clientPhone,
-                        invoiceNumber: order.invoiceNumber,
+                        invoiceNumber: order.invoiceNumber || order.orderId,
                         pdfUrl: order.invoicePdfUrl,
                         clientName: order.clientName,
                       }),

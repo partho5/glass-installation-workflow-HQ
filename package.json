@@ -44,6 +44,7 @@
     "@sentry/nextjs": "^10.28.0",
     "@t3-oss/env-nextjs": "^0.13.8",
     "@types/react-signature-canvas": "^1.0.7",
+    "cloudinary": "^2.9.0",
     "drizzle-orm": "^0.44.7",
     "next": "^16.0.10",
     "next-intl": "^4.5.8",

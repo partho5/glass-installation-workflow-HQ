@@ -197,7 +197,7 @@
     "no_invoice_data": "No invoice data available",
     "whatsapp_sent_success": "✅ Invoice sent via WhatsApp successfully",
     "whatsapp_send_error": "Error sending WhatsApp",
-    "enter_client_phone": "Enter client's WhatsApp number (with country code)"
+    "enter_client_phone": "Client has no WhatsApp number registered in Notion. Please add the WhatsApp property to the client record."
   },
   "CrewDashboard": {
     "meta_title": "Crew Dashboard",

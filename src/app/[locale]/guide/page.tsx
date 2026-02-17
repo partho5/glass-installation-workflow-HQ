@@ -36,7 +36,7 @@ export default function UserGuidePage() {
           <div className="mb-8 rounded-2xl bg-gradient-to-r from-orange-500 to-red-500 p-8 text-white shadow-xl">
             <h2 className="mb-4 flex items-center gap-3 text-3xl font-bold">
               <span className="text-4xl">📋</span>
-              ONE-TIME SETUP (15 minutes)
+              ONE-TIME SETUP
             </h2>
           </div>
 
@@ -503,7 +503,7 @@ export default function UserGuidePage() {
         <section className="mb-16">
           <div className="rounded-2xl bg-gradient-to-r from-teal-700 to-green-900 p-8 text-white shadow-xl">
             <h2 className="mb-6 text-center text-3xl font-bold">
-              BUSINESS BENEFITS
+              Ease Of Business
             </h2>
             <div className="grid gap-6 md:grid-cols-2">
               <div className="rounded-lg bg-white/20 p-6 backdrop-blur">
